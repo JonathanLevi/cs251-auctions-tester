@@ -109,7 +109,7 @@ async.series([
             value: 424,
             blockNum: 3
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.ok(!returnVal, 'submit an invalid bid to the Dutch auction')
         }, done)
     },
@@ -132,7 +132,7 @@ async.series([
             value: 450,
             blockNum: 5
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.notEqual(returnVal, accounts[3].address.toString('hex'), 'submit a late bid to the Dutch auction')
         }, done)
     },
@@ -166,7 +166,7 @@ async.series([
             value: 400,
             blockNum: 4
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[1].address.toString('hex'), 'submit a winning bid to the second Dutch auction')
         }, done)
     },
@@ -217,7 +217,7 @@ async.series([
             value: 400,
             blockNum: 4
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[1].address.toString('hex'), 'submit a winning bid to the third Dutch auction')
         }, done)
     },
@@ -255,7 +255,7 @@ async.series([
             data: abi[mainContractName].bid + auctionIDs.englishAuctionId.toString('hex'),
             value: 400
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[1].address.toString('hex'), 'submit a bid to the English auction')
         }, done)
     },
@@ -266,7 +266,7 @@ async.series([
             data: abi[mainContractName].bid + auctionIDs.englishAuctionId.toString('hex'),
             value: 399
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.notEqual(returnVal, accounts[1].address.toString('hex'), 'submit a lower bid to the English auction')
         }, done)
     },
@@ -278,7 +278,7 @@ async.series([
             value: 450,
             blockNum: 2,
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[3].address.toString('hex'), 'submit a higher bid to the English auction')
         }, done)
     },
@@ -290,7 +290,7 @@ async.series([
             value: 455,
             blockNum: 2,
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.notEqual(returnVal, accounts[2].address.toString('hex'), 'submit an insufficiently higher bid to the English auction')
         }, done)
     },
@@ -302,7 +302,7 @@ async.series([
             value: 1000,
             blockNum: 13,
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.notEqual(returnVal, accounts[4].address.toString('hex'), 'submit a late bid to the English auction')
         }, done)
     },
@@ -428,7 +428,7 @@ async.series([
             value: 600,
             blockNum: 10
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[1].address.toString('hex'), 'open first bid to Vickrey auction')
         }, done)
     },
@@ -441,7 +441,7 @@ async.series([
             value: 1000,
             blockNum: 10
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[2].address.toString('hex'), 'open second bid to Vickrey auction')
         }, done)
     },
@@ -478,7 +478,7 @@ async.series([
             value: 800,
             blockNum: 10
         }, function(results) {
-            var returnVal = ethUtils.unpad(results.vm.return).toString('hex')
+            var returnVal = resultsToAddress(results.vm.return)
             test.equal(returnVal, accounts[2].address.toString('hex'), 'open third bid to Vickrey auction')
         }, done)
     },
@@ -550,6 +550,9 @@ function nullAddress() {
     return uintString(0, 256)
 }
 
+function resultsToAddress(result) {
+  return result.slice(12).toString('hex')
+}
 
 function queryAccountBalance(i, cb) {
     stateTrie.get(accounts[2].address, function(err, results) {
